@@ -1,26 +1,21 @@
+section .data
+    msg     db "Factorial of %d is %d", 10, 0    ; Format string with newline
 
 section .text
-    global factorial        
+    global factorial        ; Export factorial function
 
 factorial:
-    cmp rdi, 1              
-    jbe .base_case
-    push rdi                
-    dec rdi                 
-    call factorial          
-    pop rbx                 
-    imul rax, rbx           
+    cmp rdi, 1             ; Compare input with 1
+    jbe .base_case         ; If input <= 1, jump to base case
+    push rdi               ; Save current number
+    dec rdi                ; n-1
+    call factorial         ; Recursive call
+    pop rbx                ; Restore original number
+    imul rax, rbx         ; Multiply result
     ret
 
 .base_case:
-    mov rax, 1              
+    mov rax, 1            ; Return 1 for input <= 1
     ret
 
-section .data
-    msg     db "Hello from q4.asm!", 0
-
-section .text
-    global get_message
-get_message:
-    lea rax, [rel msg]    
-    ret
+section .note.GNU-stack noalloc noexec nowrite progbits ; Add GNU stack marking
